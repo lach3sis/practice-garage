@@ -41,7 +41,16 @@ class GarageTestCase(BasicTestCase):
         
         g.put()
         
+        c = Car()
+        c.name = "afadf"
+        c.brand = "Nissan"
+        c.garage = g.key
+        c.garage_name = g.name
+        logging.warning(c)
+        c.put()
         
+        logging.warning(g)
+        logging.warning(c)
     
     def test_dt(self):
         
