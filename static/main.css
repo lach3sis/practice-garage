@@ -1,0 +1,28 @@
+.container {
+	width: 100%;
+	background-color: #f3ffeb;
+}
+
+.container form {
+	margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    background-color: white;
+}
+
+.data {
+	width: 450px;
+	margin-left: auto;
+    margin-right: auto;
+    clear: both;
+}
+
+.data .label {
+	width: 150px;
+	height: 25px;
+	float: left;
+}
+.data .field {
+	width: 300px;
+	float: left;
+}

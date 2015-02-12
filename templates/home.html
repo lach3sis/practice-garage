@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block script %}
+<!-- script here -->
+<script type="text/javascript" src="/scripts/home.js"></script>
+{% endblock %}
+{% block title %}Home{% endblock %}
+{% block page %}
+<div>Content here</div>
+<div id="container-add-garage" class="container">
+	<form id="new-garagae">
+		<div class="data">
+			<div class="label"><label>Name</label></div>
+			<div class="field"><input name="name" /></div>
+		</div>
+		<div class="data">
+			<div class="label"><label>Brand</label></div>
+			<div class="field"><input name="brand" /></div>
+		</div>
+		<div class="data">
+			<div class="label"><label>Note</label></div>
+			<div class="field"><textarea name="note" ></textarea></div>
+		</div>
+	</form>
+	<button type="button" id="add-garage" class="save">Save</button>
+</div>
+<div id="garage-list">
+
+</div>
+{% endblock %}
