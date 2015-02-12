@@ -10,6 +10,14 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+<<<<<<< HEAD
+=======
+		<buildCommand>
+			<name>com.eclipsesource.jshint.ui.builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+>>>>>>> b7c630b5571aa61d398d976d7fa273761e751058
 	</buildSpec>
 	<natures>
 		<nature>org.python.pydev.pythonNature</nature>
