@@ -33,9 +33,9 @@ class Garage(ndb.Model):
         """
         q = Garage.query()
         if name:
-            q.filter(Garage.name, name)
+            q = q.filter(Garage.name == name)
         elif brand:
-            q.filter(Garage.brand, brand)
+            q = q.filter(Garage.brand == brand)
         if limit:
             return q.fetch(limit)
         return [x for x in q]
@@ -54,7 +54,7 @@ class Garage(ndb.Model):
     @classmethod
     def add(cls, props):
         g = Garage()
-        g.fill(params=props)
+        g.fill(props=props)
         g.save()
 
     def delete(self):

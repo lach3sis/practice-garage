@@ -15,8 +15,6 @@
 <path>${GOOGLE_APP_ENGINE}/lib/antlr3</path>
 <path>${GOOGLE_APP_ENGINE}/lib/cherrypy</path>
 <path>${GOOGLE_APP_ENGINE}/lib/concurrent</path>
-<path>${GOOGLE_APP_ENGINE}/lib/deprecated_enum</path>
-<path>${GOOGLE_APP_ENGINE}/lib/distutils</path>
 <path>${GOOGLE_APP_ENGINE}/lib/django-0.96</path>
 <path>${GOOGLE_APP_ENGINE}/lib/django-1.2</path>
 <path>${GOOGLE_APP_ENGINE}/lib/django-1.3</path>
