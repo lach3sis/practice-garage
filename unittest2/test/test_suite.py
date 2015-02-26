@@ -1,7 +1,8 @@
+import sys
+
+import unittest2
 from unittest2.test.support import EqualityMixin, LoggingResult
 
-import sys
-import unittest2
 
 class Test(object):
     class Foo(unittest2.TestCase):

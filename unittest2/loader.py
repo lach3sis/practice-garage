@@ -1,5 +1,6 @@
 """Loading unittests."""
 
+from fnmatch import fnmatch
 import os
 import re
 import sys
@@ -7,9 +8,8 @@ import traceback
 import types
 import unittest
 
-from fnmatch import fnmatch
-
 from unittest2 import case, suite
+
 
 try:
     from os.path import relpath

@@ -1,4 +1,3 @@
-
 from google.appengine.ext import ndb
 
 
@@ -8,7 +7,9 @@ class Garage(ndb.Model):
     brand = ndb.StringProperty()
     
     note = ndb.TextProperty(indexed=False)
-    
+    price_per_hours = ndb.FloatProperty()
+    roundup_workhrs = ndb.BooleanProperty()
+
     @classmethod
     def get(cls, key):
         return ndb.Key("Garage", int(key)).get()
@@ -23,7 +24,15 @@ class Garage(ndb.Model):
         if limit:
             return q.fetch(limit)
         return q
-
+    
+    
+    @classmethod
+    def add(cls, params):
+        c = Garage()
+        c.fill(params)
+        c.put()
+        return c
+    
     def fill(self, params):
         if 'name' in params:
             self.name = params.get('name')
@@ -31,8 +40,10 @@ class Garage(ndb.Model):
             self.brand = params.get('brand')
         if 'note' in params:
             self.note = params.get('note')
+        if 'price_per_hours' in params:
+            self.price_per_hours = params.get('price_per_hours')
+        if 'roundup_workhrs' in params:
+            self.roundup_workhrs = params.get('roundup_workhrs')
     
     def save(self):
-        import logging
-        logging.warning("putting it in datastore :O")
         self.put()

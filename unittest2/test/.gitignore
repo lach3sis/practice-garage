@@ -1,0 +1,17 @@
+/__init__.pyc
+/dummy.pyc
+/support.pyc
+/test_assertions.pyc
+/test_break.pyc
+/test_case.pyc
+/test_discovery.pyc
+/test_functiontestcase.pyc
+/test_loader.pyc
+/test_new_tests.pyc
+/test_program.pyc
+/test_result.pyc
+/test_runner.pyc
+/test_setups.pyc
+/test_skipping.pyc
+/test_suite.pyc
+/test_unittest2_with.pyc

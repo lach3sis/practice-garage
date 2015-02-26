@@ -3,6 +3,7 @@ import weakref
 
 from unittest2.compatibility import wraps
 
+
 __unittest = True
 
 

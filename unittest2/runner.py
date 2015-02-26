@@ -6,6 +6,7 @@ import unittest
 
 from unittest2 import result
 
+
 try:
     from unittest2.signals import registerResult
 except ImportError:

@@ -1,6 +1,6 @@
+from StringIO import StringIO
 import sys
 import textwrap
-from StringIO import StringIO
 
 import unittest2
 

@@ -1,10 +1,12 @@
 """Unittest main program"""
 
-import sys
 import os
+import sys
 import types
 
 from unittest2 import loader, runner
+
+
 try:
     from unittest2.signals import installHandler
 except ImportError:

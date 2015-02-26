@@ -1,9 +1,8 @@
+from cStringIO import StringIO
 import pickle
 
-from cStringIO import StringIO
-from unittest2.test.support import LoggingResult, OldTestResult
-
 import unittest2
+from unittest2.test.support import LoggingResult, OldTestResult
 
 
 class Test_TextTestRunner(unittest2.TestCase):

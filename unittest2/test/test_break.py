@@ -1,15 +1,16 @@
+from cStringIO import StringIO
 import gc
 import os
 import weakref
 
-from cStringIO import StringIO
+import unittest2
+
 
 try:
     import signal
 except ImportError:
     signal = None
 
-import unittest2
 
 
 class TestBreak(unittest2.TestCase):

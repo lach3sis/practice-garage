@@ -1,6 +1,8 @@
 import os
 import sys
+
 from unittest2.loader import defaultTestLoader
+
 
 def collector():
     # import __main__ triggers code re-execution

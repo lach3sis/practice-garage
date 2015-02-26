@@ -1,8 +1,7 @@
 from cStringIO import StringIO
-
 import unittest
-import unittest2
 
+import unittest2
 from unittest2.test.support import resultFactory
 
 

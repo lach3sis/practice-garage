@@ -1,8 +1,10 @@
 """ Helper class for the params of the handler
 """
-import datetime, cgi
-import urllib
+import cgi
+import datetime
 import logging
+import urllib
+
 
 class ParamCollection():
     def __init__(self, request=None):

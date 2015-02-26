@@ -2,7 +2,9 @@
 
 import sys
 import unittest
+
 from unittest2 import case, util
+
 
 __unittest = True
 

@@ -37,19 +37,16 @@ __version__ = '0.5.1'
 __all__.extend(['getTestCaseNames', 'makeSuite', 'findTestCases'])
 
 
-from unittest2.collector import collector
-from unittest2.result import TestResult
-from unittest2.case import (
-    TestCase, FunctionTestCase, SkipTest, skip, skipIf,
+from unittest2.case import TestCase, FunctionTestCase, SkipTest, skip, skipIf, \
     skipUnless, expectedFailure
-)
-from unittest2.suite import BaseTestSuite, TestSuite
-from unittest2.loader import (
-    TestLoader, defaultTestLoader, makeSuite, getTestCaseNames,
-    findTestCases
-)
+from unittest2.collector import collector
+from unittest2.loader import TestLoader, defaultTestLoader, makeSuite, \
+    getTestCaseNames, findTestCases
 from unittest2.main import TestProgram, main, main_
+from unittest2.result import TestResult
 from unittest2.runner import TextTestRunner, TextTestResult
+from unittest2.suite import BaseTestSuite, TestSuite
+
 
 try:
     from unittest2.signals import (

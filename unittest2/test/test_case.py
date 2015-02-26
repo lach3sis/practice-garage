@@ -1,14 +1,11 @@
+from copy import deepcopy
 import difflib
 import pprint
 import re
 
-from copy import deepcopy
-
 import unittest2
-
-from unittest2.test.support import (
-    OldTestResult, EqualityMixin, HashingMixin, LoggingResult
-)
+from unittest2.test.support import OldTestResult, EqualityMixin, HashingMixin, \
+    LoggingResult
 
 
 class MyException(Exception):

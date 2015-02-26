@@ -1,9 +1,11 @@
 from __future__ import with_statement
 
+import warnings
+
 import unittest2
 from unittest2.test.support import OldTestResult, catch_warnings
 
-import warnings
+
 # needed to enable the deprecation warnings
 warnings.simplefilter('default')
 
