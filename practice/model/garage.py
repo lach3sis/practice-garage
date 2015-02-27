@@ -50,12 +50,17 @@ class Garage(ndb.Model):
 
     def save(self):
         self.put()
+        # i changed a garage so cache list incorrect
+        memcache.delete("garages")
 
     @classmethod
     def add(cls, props):
         g = Garage()
         g.fill(props=props)
         g.save()
+        # adding garage changes list but handled in the save
 
     def delete(self):
         self.key.delete()
+        # i removed a garages so cache list incorrect
+        memcache.delete("garages")

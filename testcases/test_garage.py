@@ -22,7 +22,7 @@ class GarageTestCase(BasicTestCase):
         g.brande = "Volvo"
         g.note = """ Testing note
         for multi line
-        hueaah"""
+        hueaahhaha"""
         
         g.put()
         self.assertEqual(1, Garage.query().count()) # yay success
