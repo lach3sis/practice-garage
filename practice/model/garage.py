@@ -8,7 +8,8 @@ class Garage(ndb.Model):
     brand = ndb.StringProperty()
 
     postal_country = ndb.StringProperty()
-
+    price_per_hours = ndb.FloatProperty()
+    roundup_workhrs = ndb.BooleanProperty()
     note = ndb.TextProperty(indexed=False)
 
     @classmethod
@@ -47,6 +48,8 @@ class Garage(ndb.Model):
             self.brand = props['brand']
         if 'note' in props:
             self.note = props['note']
+        if 'price_per_hours' in props:
+            self.price_per_hours = props['price_per_hours']
 
     def save(self):
         self.put()

@@ -52,15 +52,23 @@ class Contact(ndb.Model):
         contact = key.get()
         return contact
     
-    @classmethods
+    @classmethod
+    def get_for_car(cls, car):
+        if not car:
+            logging.warning("NO CAR!")
+            return
+        cs = cls.list(car=car)
+        if(cs):
+            return cs[0]
+    
+    @classmethod
     def list(cls, car, name=None, limit=20):
-        logging.warning(car)
-        contacts = memcache.get(car.key.urlsafe())
+        contacts = memcache.get("contacts_%s" %car.key.urlsafe())
         if not contacts:
             logging.warning("not in memcache")
-            q = Contact.query(ancestor = car.key)
+            q = Contact.query(ancestor=car.key)
             contacts = [ x for x in q]
-            memcache.set(car.key.urlsafe(), contacts)
+            memcache.set("contacts_%s" %car.key.urlsafe(), contacts)
         if limit and len(contacts) > limit:
             return contacts[:limit]
         return contacts
