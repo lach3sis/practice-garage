@@ -21,16 +21,19 @@ class Receit(ndb.Model):
         
     def save(self):
         self.put()
-        
+        memcache.delete("receits_%s" % self.key.parent().urlsafe())
+       
         #Delete entity by key
     def delete(self):
         self.key.delete()
+        memcache.delete("receits_%s" % self.key.parent().urlsafe())
     
     @classmethod
     def add(cls, contact, g):
         r = Receit(parent = contact.key)
         r.fill(g)
         r.put()
+        memcache.delete("receits_%s" % contact.key.urlsafe())
         return r
     
 #     @staticmethod
@@ -53,7 +56,7 @@ class Receit(ndb.Model):
             logging.warning("not in memcache")
             q = Receit.query(ancestor = contact.key)
             receits = [ x for x in q ]
-            memcache.set(contact.key.urlsafe(), receits)
+            memcache.set("receits_%s" % contact.key.urlsafe(), receits)
             if car:
                 q = q.filter(Receit.car == car.key)
             if service:

@@ -74,7 +74,7 @@ class GarageTestCase(BasicTestCase):
         
 #         print len(Service.list(car))
 #         print Service.list(car, "Cleaning")
-        Service.add(car, {"replacement_part": "Cleaning", "price_part": 654, "worked_hrs": 2})
+        Service.add(car, {"replacement_part": "Cleaning", "price_part": 654, "worked_hrs": 92})
         
         
         

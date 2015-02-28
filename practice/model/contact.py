@@ -32,12 +32,14 @@ class Contact(ndb.Model):
         #Delete entity by key
     def delete(self):
         self.key.delete()
+        memcache.delete("contacts_%s" %self.key.parent().urlsafe())
     
     @classmethod
     def add(cls, car, g):
         c = Contact(parent = car.key)
         c.fill(g)
         c.put()
+        memcache.delete("contacts_%s" %car.key.urlsafe())
         return c
     
 #     @staticmethod

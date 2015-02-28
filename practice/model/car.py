@@ -97,9 +97,25 @@ class Car(ndb.Model):
         klootfactor = contact.klootfactor    
         datestamp = time.strftime("%x")
         for service in servicelist:
-
-            total = total + calc(self, klootfactor, service.worked_hrs, self.garage.get().price_per_hours, service.price_part)
-        self.create_receit(contact, {'total': total,'servicedate': datestamp})
+            total = total + calc(self, 
+                                 klootfactor, 
+                                 service.worked_hrs, 
+                                 self.garage.get().price_per_hours, 
+                                 service.price_part
+                                 )
+        if len(Receit.list(contact, self)) == 0 :
+            self.create_receit(contact, {'total': total,'servicedate': datestamp})
+        elif len(Receit.list(contact, self)) != 0 :
+            print "Retrieving receit from car !"
+            for receit in Receit.list(contact, self):
+                ident = receit.key.id()
+            receit = Receit.get(ident, contact.key, 1)
+            receit.total = total
+            receit.servicedate = datestamp
+            receit.save()
+            return total
+        else:
+            print "Car ERROR!"
 #         for bon in Receit.list(contact):
 #             print "Receit info: %s" % bon
         return total
@@ -163,12 +179,14 @@ class Car(ndb.Model):
         datestamp = time.strftime("%x") 
         total = total + calc(self, klootfactor, service.worked_hrs, self.garage.get().price_per_hours, service.price_part)
         logging.warning("check if there are any receits for this car")
-        if len(Receit.list(contact, self)) >= 0 :
+        if len(Receit.list(contact, self)) != 0 :
             for receit in Receit.list(contact, self):
+                print "editing receit"
                 ident = receit.key.id()
                 receit = Receit.get(ident, contact.key)
                 receit.total = total
                 receit.save()
+                
         else:
             self.create_receit(contact, {'total': total,'servicedate': datestamp})
 #         for bon in Receit.list(contact):
