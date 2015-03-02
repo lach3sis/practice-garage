@@ -156,7 +156,6 @@ class Car(ndb.Model):
             service = Service.get(ident, self.key)
         for c in Contact.list(self):
             ident = c.key.id()
-        
         contact = Contact.get(ident, self.key)
         total = 0.0
         klootfactor = contact.klootfactor
@@ -177,7 +176,12 @@ class Car(ndb.Model):
 #         contact = Contact.get(ident, self.key)
 #         klootfactor = contact.klootfactor    
         datestamp = time.strftime("%x") 
-        total = total + calc(self, klootfactor, service.worked_hrs, self.garage.get().price_per_hours, service.price_part)
+        total = total + calc(self, 
+                             klootfactor, 
+                             service.worked_hrs, 
+                             self.garage.get().price_per_hours, 
+                             service.price_part
+                             )
         logging.warning("check if there are any receits for this car")
         if len(Receit.list(contact, self)) != 0 :
             for receit in Receit.list(contact, self):
