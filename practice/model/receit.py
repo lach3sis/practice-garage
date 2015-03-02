@@ -64,3 +64,10 @@ class Receit(ndb.Model):
         if limit and len(receits) > limit:
             return receits[:limit]
         return receits
+    
+    @classmethod
+    def mem(cls,contact):
+        receits = memcache.get("receits_%s" % contact.key.urlsafe())
+        return receits
+    
+        

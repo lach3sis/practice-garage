@@ -75,4 +75,10 @@ class Contact(ndb.Model):
             return contacts[:limit]
         return contacts
         
+    def mem(self):
+        from practice.model.car import Car
+        carkey = self.key.parent()
+        car = carkey.get()
+        contacts = memcache.get("contacts_%s" %car.key.urlsafe())
+        print contacts
     

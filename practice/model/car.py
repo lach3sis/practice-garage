@@ -6,6 +6,7 @@ Created on Feb 26, 2015
 from google.appengine.ext import ndb
 from practice.model.service import Service
 from practice.model.receit import Receit
+from practice.model.contact import Contact
 import time
 import logging
 from google.appengine.api import memcache
@@ -17,21 +18,28 @@ class Car(ndb.Model):
     name = ndb.StringProperty(required=True)
     last_edit = ndb.DateTimeProperty(auto_now=True)
      
-    def fill(self,c):
-        if 'garage' in c:
-            self.garage = c['garage']
-        self.brand = c['brand']
-        self.name = c['name']
+    def fill(self,props):
+        if 'garage' in props:
+            self.garage = props['garage']
+        self.brand = props['brand']
+        self.name = props['name']
         
-        
-             
     def save(self):
         self.put()
+        memcache.delete("cars_%s" % self.garage.urlsafe())
+    
+    @classmethod
+    def update(cls, ident, props):
+        c = cls.get(ident=ident)
+        c.fill(props=props)
+        c.save()
+        return c
         
-        
+            
     def delete(self):
         logging.warning("delete function in Car.py")
         self.key.delete()
+        memcache.delete("cars_%s" % self.garage.urlsafe())
      
     @staticmethod
     def get(ident):
@@ -46,8 +54,37 @@ class Car(ndb.Model):
         c.garage = garage.key
         c.fill(params)
         c.put()
+        memcache.delete("cars_%s" % garage.key.urlsafe())
         return c
     
+    #laat contact zien van huidige auto
+    def listcontact(self):
+        for contact in Contact.list(self):
+            ident = contact.key.id()
+        contact = Contact.get(ident, self.key)
+        print contact
+
+    def listservices(self):
+        services =[]
+        for contact in Contact.list(self):
+            ident = contact.key.id()
+        contact = Contact.get(ident, self.key)
+        for x in Service.list(self):
+            ident = x.key.id()
+            service = Service.get(ident, self.key)
+            services.append(service)
+        return services
+
+    def listreceit(self):
+        receits =[]
+        for contact in Contact.list(self):
+            ident = contact.key.id()
+        contact = Contact.get(ident, self.key)
+        for r in Receit.list(contact, self):
+            ident = r.key.id()
+            receit = Receit.get(ident, contact.key)
+            receits.append(receit)
+        return receits
     
     def delete_service(self, contact, service):
         Service.delete(service)
@@ -66,12 +103,10 @@ class Car(ndb.Model):
         print "%s contacts " % len(Contact.list(self))
         contact = Contact.get_for_car(car=self)
         #contact = Contact.get(ident, self.key)
-        print "this is contact %s" % contact
+#         print "this is contact %s" % contact
 #         contact = Contact.query(Contact.list(self) == self.key)
 #         print contact
         
-
-
 #    Calculation for multiple services
     def calculate1(self, servicelist):
         endTotal = 0.0
@@ -105,19 +140,17 @@ class Car(ndb.Model):
                                  )
         if len(Receit.list(contact, self)) == 0 :
             self.create_receit(contact, {'total': total,'servicedate': datestamp})
+            memcache.delete("receits_%s" % contact.key.urlsafe())   
         elif len(Receit.list(contact, self)) != 0 :
-            print "Retrieving receit from car !"
-            for receit in Receit.list(contact, self):
-                ident = receit.key.id()
+            for receit in Receit.list(contact, self):ident = receit.key.id()
             receit = Receit.get(ident, contact.key, 1)
             receit.total = total
             receit.servicedate = datestamp
             receit.save()
+            memcache.delete("receits_%s" % contact.key.urlsafe())
             return total
         else:
             print "Car ERROR!"
-#         for bon in Receit.list(contact):
-#             print "Receit info: %s" % bon
         return total
     
        
@@ -162,13 +195,11 @@ class Car(ndb.Model):
       
         def calc(self, klootfactor=1, worked_hrs=0.0, price_per_hours=0.0, price_part=0.0):
             result = (price_per_hours * worked_hrs)
-             
             if price_part:
                 result = result + price_part
             if klootfactor:
                 percent = result / 100 * klootfactor
                 return result - percent
-             
             return result
 #         from practice.model.contact import Contact
 #         for c in Contact.list(self):
@@ -189,12 +220,9 @@ class Car(ndb.Model):
                 ident = receit.key.id()
                 receit = Receit.get(ident, contact.key)
                 receit.total = total
-                receit.save()
-                
+                receit.save()    
         else:
             self.create_receit(contact, {'total': total,'servicedate': datestamp})
-#         for bon in Receit.list(contact):
-#             print "Receit info: %s" % bon
         return total
         
 #     # Calculate with discount
@@ -226,25 +254,29 @@ class Car(ndb.Model):
 #
     @classmethod
     def listtest(cls, garage, name=None, limit=20):
-        cars = memcache.get(garage.key.urlsafe())
+        cars = memcache.get("cars_%s" % garage.key.urlsafe())
         if not cars:
             logging.warning("not in memcache")
             q = Car.query(Car.garage == garage.key)
             cars = [ x for x in q]
-            memcache.set(garage.key.urlsafe(), cars)
+            memcache.set("cars_%s" % garage.key.urlsafe(), cars)
+#         if cars:
+#             logging.warning("CACHED!!")
         if limit and len(cars) > limit:
             return cars[:limit]
         return cars
 
-    @staticmethod
-    def list(garage=None, name=None, limit=20):
-        q = Car.query()
-        if garage:
-            q.filter(Car.garage == garage.key)
-        if name:
-            q.filter(Car.name == name) 
-        if limit:
-            return q.fetch(limit)
-        return [x for x in q.order(Car.name)]
-        # return a list
+#     @staticmethod
+#     def list(garage=None, name=None, limit=20):
+#         q = Car.query()
+#         if garage:
+#             q.filter(Car.garage == garage.key)
+#         if name:
+#             q.filter(Car.name == name) 
+#         if limit:
+#             return q.fetch(limit)
+#         return [x for x in q.order(Car.name)]
+#         # return a list
+        
+
         

@@ -57,6 +57,14 @@ class Garage(ndb.Model):
         memcache.delete("garages")
 
     @classmethod
+    def update(cls, ident, props):
+        c = cls.get(key=ident)
+        c.fill(props=props)
+        c.save()
+        return c
+        
+
+    @classmethod
     def add(cls, props):
         g = Garage()
         g.fill(props=props)
