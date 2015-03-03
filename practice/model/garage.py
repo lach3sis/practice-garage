@@ -69,6 +69,7 @@ class Garage(ndb.Model):
         g = Garage()
         g.fill(props=props)
         g.save()
+        return g
         # adding garage changes list but handled in the save
 
     def delete(self):

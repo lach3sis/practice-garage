@@ -34,6 +34,7 @@ class Contact(ndb.Model):
         self.key.delete()
         memcache.delete("contacts_%s" %self.key.parent().urlsafe())
     
+    #Add a new contact
     @classmethod
     def add(cls, car, g):
         c = Contact(parent = car.key)
@@ -41,6 +42,16 @@ class Contact(ndb.Model):
         c.put()
         memcache.delete("contacts_%s" %car.key.urlsafe())
         return c
+
+    
+    #update an existing contact
+
+    def update(self, ident, props):
+        c = self.get(ident, self.key.parent())
+        c.fill(props)
+        c.save()
+        return c
+    
     
 #     @staticmethod
 #     def get(ident, garagekey, limit=20):

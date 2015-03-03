@@ -37,7 +37,6 @@ class Car(ndb.Model):
         
             
     def delete(self):
-        logging.warning("delete function in Car.py")
         self.key.delete()
         memcache.delete("cars_%s" % self.garage.urlsafe())
      
@@ -75,16 +74,23 @@ class Car(ndb.Model):
             services.append(service)
         return services
 
-    def listreceit(self):
-        receits =[]
-        for contact in Contact.list(self):
-            ident = contact.key.id()
-        contact = Contact.get(ident, self.key)
-        for r in Receit.list(contact, self):
-            ident = r.key.id()
-            receit = Receit.get(ident, contact.key)
-            receits.append(receit)
-        return receits
+
+
+#     @classmethod
+#     def listreceit(cls,self):
+#         receits =[]
+#         if len(Contact.list(self)) > 0 :
+#             for contact in Contact.list(self):
+#                 ident = contact.key.id()
+#             contact = Contact.get(ident, self.key)
+#             for r in Receit.list(contact, self):
+#                 ident = r.key.id()
+#                 receit = Receit.get(ident, contact.key)
+#                 receits.append(receit)
+#             return receits
+#         else:
+#             return None
+#         return receits
     
     def delete_service(self, contact, service):
         Service.delete(service)
@@ -213,8 +219,9 @@ class Car(ndb.Model):
                              self.garage.get().price_per_hours, 
                              service.price_part
                              )
-        logging.warning("check if there are any receits for this car")
+        print ("check if there are any receits for this car")
         if len(Receit.list(contact, self)) != 0 :
+            print "Receit found"
             for receit in Receit.list(contact, self):
                 print "editing receit"
                 ident = receit.key.id()
@@ -222,6 +229,7 @@ class Car(ndb.Model):
                 receit.total = total
                 receit.save()    
         else:
+            print "No Receit found, creating new one."
             self.create_receit(contact, {'total': total,'servicedate': datestamp})
         return total
         
