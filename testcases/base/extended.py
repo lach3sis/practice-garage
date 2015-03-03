@@ -34,12 +34,10 @@ class ExtendedTestCase(BasicTestCase):
         car = self.get_car()
         
         self.log(name)
-        if len(Contact.list(car, "Jan")) <= 0 :
-            props = {"name": "Jan", "email": "Jan@Jansen.com", "tel_nr": "065461125", "klootfactor": 7, "car": car.key}
+        if Contact.query(Contact.car == car.key, Contact.name==name).count() <= 0 :
+            props = { "name": name, "email": "Jan@Jansen.com", "tel_nr": "065461125", "klootfactor": 7, "car": car.key}
             return Contact.add(car, props)
         else:
             for c in Contact.list(car, "Jan"):ident = c.key.id()
             return Contact.get(ident)
             
-    def get_service(self,):
-        pass

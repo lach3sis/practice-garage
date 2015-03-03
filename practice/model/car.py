@@ -158,108 +158,35 @@ class Car(ndb.Model):
         else:
             print "Car ERROR!"
         return total
-    
-       
-#     # Calculation for 1 service
-#     def calculate(self, service):
-#         total = 0.0
-#         klootfactor = 0
-#         def calc(self, klootfactor=1, worked_hrs=0.0, price_per_hours=0.0, price_part=0.0):
-#             result = (price_per_hours * worked_hrs)
-#              
-#             if price_part:
-#                 result = result + price_part
-#             if klootfactor:
-#                 percent = result / 100 * klootfactor
-#                 return result - percent
-#              
-#             return result
-#         from practice.model.contact import Contact
-#         for c in Contact.list(self):
-#             ident = c.key.id()
-#         contact = Contact.get(ident, self.key)
-#         klootfactor = contact.klootfactor    
-#         datestamp = time.strftime("%x") 
-#         total = total + calc(self, klootfactor, service.worked_hrs, self.garage.get().price_per_hours, service.price_part)
-# #         self.create_receit(contact, {'total': total,'servicedate': datestamp})
-# #         for bon in Receit.list(contact):
-# #             print "Receit info: %s" % bon
-#         return total
 
     # Calculation for 1 service
     def calculate(self):
-        from practice.model.contact import Contact  
-        if (len(Service.list(self)) > 0):
-            for s in Service.list(self):
-                ident = s.key.id()
-            service = Service.get(ident, self.key)
-        for c in Contact.list(self):
-            ident = c.key.id()
-        contact = Contact.get(ident, self.key)
         total = 0.0
-        klootfactor = contact.klootfactor
-      
+        contact = None
+        c = Receit.get_by_car(self)
+        if c: c.delete()
+        c = None
+        
         def calc(self, klootfactor=1, worked_hrs=0.0, price_per_hours=0.0, price_part=0.0):
             result = (price_per_hours * worked_hrs)
             if price_part:
                 result = result + price_part
             if klootfactor:
                 percent = result / 100 * klootfactor
-                return result - percent
-            return result
-#         from practice.model.contact import Contact
-#         for c in Contact.list(self):
-#             ident = c.key.id()
-#         contact = Contact.get(ident, self.key)
-#         klootfactor = contact.klootfactor    
-        datestamp = time.strftime("%x") 
-        total = total + calc(self, 
-                             klootfactor, 
-                             service.worked_hrs, 
-                             self.garage.get().price_per_hours, 
-                             service.price_part
-                             )
-        print ("check if there are any receits for this car")
-        if len(Receit.list(contact, self)) != 0 :
-            print "Receit found"
-            for receit in Receit.list(contact, self):
-                print "editing receit"
-                ident = receit.key.id()
-                receit = Receit.get(ident, contact.key)
-                receit.total = total
-                receit.save()    
-        else:
-            print "No Receit found, creating new one."
-            self.create_receit(contact, {'total': total,'servicedate': datestamp})
-        return total
+                result = result - percent
+            return result  
         
-#     # Calculate with discount
-#     def calculate3(self):
-#         total = 0.0
-#         klootfactor = 0
-#         def calc(self, klootfactor=1, worked_hrs=0.0, price_per_hours=0.0, price_part=0.0):
-#             result = (price_per_hours * worked_hrs)
-#             
-#             if price_part:
-#                 result = result + price_part
-#             if klootfactor:
-#                 percent = result / 100 * klootfactor
-#                 return result - percent
-#             
-#             return result
-#         for contact in Contact.list(self):
-#             klootfactor = contact.klootfactor
-#             
-#         for p in Service.list(self):
-#             datestamp = time.strftime("%x") 
-#             total = total + calc(self, klootfactor, p.worked_hrs, self.garage.get().price_per_hours, p.price_part)
-#         for contact in Contact.list(self):
-#             tester = self.create_receit(contact, {'total': total,'servicedate': datestamp})
-#             for bon in Receit.list(contact):
-#                 print "Your last job was :"
-#                 print bon
-#         return total
-#
+        kf = 1
+        for c in Contact.list(self):
+            contact = c
+            kf = c.klootfactor
+        for item in Service.list(car=self):
+            total = total + calc(self, kf, item.worked_hrs, self.garage.get().price_per_hours,
+                                 item.price_part)
+
+        return Receit.add(self, {'total': total,'servicedate': time.strftime("%x"),
+                                 'contact': contact.key if contact else None})
+
     @classmethod
     def listtest(cls, garage, name=None, limit=20):
         cars = memcache.get("cars_%s" % garage.key.urlsafe())

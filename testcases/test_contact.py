@@ -21,8 +21,7 @@ class Test(ExtendedTestCase):
         #Adding a new contact
         car = self.get_car()
         Contact.add(car, {"name": "Drac Vladje", "email": "Vladje@dracul.com", "tel_nr": "065461125", "klootfactor": 666, "car": car.key})
-        self.assertEqual(1, len(Contact.list(car, "Drac Vladje")))
-        logging.error("TEST : ADDING [ OK ]")          
+        self.assertEqual(1, len(Contact.list(car, "Drac Vladje")))    
         
         #Editing an existing contact
         for item in Contact.list(car, "Drac Vladje"):
@@ -31,12 +30,10 @@ class Test(ExtendedTestCase):
             contact = Contact.get(ident, car.key)
         contact.update(ident, props)
         self.assertEqual(1, len(Contact.list(car, "Drac VladiVladderVlad")))
-        logging.error("TEST : UPDATING [ OK ]")  
         
         #deleting an contact
         contact.delete()
-        self.assertEqual(0, len(Contact.list(car, "Drac VladiVladderVlad")))
-        logging.error("TEST : UPDATING [ OK ]") 
+        self.assertEqual(0, len(Contact.list(car)))
         
         
         

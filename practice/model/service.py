@@ -13,19 +13,34 @@ class Service(ndb.Model):
             self.replacement_part = c['replacement_part']
         if 'price_part' in c:
             self.price_part = c['price_part']
-        self.worked_hrs = c['worked_hrs']
+        if 'worked_hrs' in c:
+            self.worked_hrs = c['worked_hrs']
         
      
     def save(self):
         self.put()
         #car key in url gebruken
+        
         memcache.delete(self.key.parent().urlsafe())
         
+
+    def update(self, props):
+        from practice.model.car import Car
+        from practice.model.receit import Receit
+        from practice.model.contact import Contact
+        self.fill(props)
+        self.save()
+        car = self.key.parent().get()
+            
+#         Car.calculate1(car, self.list(car))
+        car.calculate()
+        print car
      
     def delete(self):
         self.key.delete()
         # parent key ophalen.
         memcache.delete(self.key.parent().urlsafe())
+        self.key.parent().get().calculate()
     
     
     @staticmethod

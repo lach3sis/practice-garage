@@ -3,10 +3,13 @@ from google.appengine.api import memcache
 import logging
 
 class Receit(ndb.Model):
-    servicedate = ndb.StringProperty(required = False)
+    garage = ndb.KeyProperty(kind="Garage")
+    car = ndb.KeyProperty(kind="Car", required=True)
+
+    servicedate = ndb.StringProperty()
     total = ndb.FloatProperty()
-    car = ndb.KeyProperty(indexed = True)
-    service = ndb.KeyProperty(indexed = True)
+    
+    contact = ndb.KeyProperty("Contact")
     
     
     def fill(self, param):
@@ -16,54 +19,50 @@ class Receit(ndb.Model):
             self.total = param['total']
         if "car" in param:
             self.car = param['car']
-        if "service" in param:
-            self.service = param['service']
+        if "contact" in param:
+            self.contact = param["contact"]
         
     def save(self):
         self.put()
-        memcache.delete("receits_%s" % self.key.parent().urlsafe())
        
         #Delete entity by key
     def delete(self):
         self.key.delete()
-        memcache.delete("receits_%s" % self.key.parent().urlsafe())
     
     @classmethod
-    def add(cls, contact, g):
-        r = Receit(parent = contact.key)
-        r.fill(g)
-        r.put()
-        memcache.delete("receits_%s" % contact.key.urlsafe())
+    def add(cls, car, props):
+        r = Receit()
+        props["garage"] = car.garage
+        props["car"] = car.key
+        r.fill(props)
+        r.save()
         return r
-    
-#     @staticmethod
-#     def get(ident, garagekey, limit=20):
-#         key = ndb.Key("Contact", int(ident), parent=garagekey)
-#         contact = key.get()
-#         return contact
 
-
-    @staticmethod
-    def get(ident, contactkey, limit=20):
-        key = ndb.Key("Receit", int(ident), parent=contactkey)
+    @classmethod
+    def get(cls, ident):
+        key = ndb.Key("Receit", int(ident))
         receit = key.get()
         return receit
     
     @classmethod
-    def list(cls, contact, car=None, service=None, limit=20):
-        receits = memcache.get(contact.key.urlsafe())
-        if not receits:
-            logging.warning("not in memcache")
-            q = Receit.query(ancestor = contact.key)
-            receits = [ x for x in q ]
-            memcache.set("receits_%s" % contact.key.urlsafe(), receits)
-            if car:
-                q = q.filter(Receit.car == car.key)
-            if service:
-                q = q.filter(Receit.service == service.key)
-        if limit and len(receits) > limit:
-            return receits[:limit]
-        return receits
+    def get_by_car(cls, car):
+        return cls.query().filter(cls.car==car.key).get()
+    
+    @classmethod
+    def list(cls, garage=None, car=None, contact=None, limit=20):
+
+        q = Receit.query()
+        if car:
+            q = q.filter(Receit.car == car.key)
+            return [q.get()]
+        elif contact:
+            q = q.filter(Receit.contact == contact.key)
+            return [q.get()]
+        elif garage:
+            q = q.filter(Receit.garage == garage.key)
+        if limit:
+            return q.fetch(limit)
+        return [x for x in q]
     
     @classmethod
     def mem(cls,contact):

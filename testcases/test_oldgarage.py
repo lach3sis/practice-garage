@@ -104,25 +104,7 @@ class GarageTestCase(BasicTestCase):
         print receit.total
         print len(Receit.list(contact, car))
          
-         
-    def test_04(self):
-        
-        for x in Garage.list("test1"):
-            ident = x.key.id()
-            key = x.key
-        garage = Garage.get(ident)
-        for c in Car.listtest(garage):
-            ident = c.key.id()
-        car = Car.get(ident)
-        
-        Car.listcontact(car)
-        print ('----')
-        print Car.listreceit(car)
-        print ('-------')
-        for x in Car.listservices(car):
-            print x
-        
-        
+
 
     def tearDown(self):
         """ tearDown will be called after a testcase
