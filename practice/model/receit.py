@@ -13,6 +13,8 @@ class Receit(ndb.Model):
     
     
     def fill(self, param):
+        '''Fill current Receit entity with properties
+        '''
         if 'servicedate' in param:
             self.servicedate = param['servicedate']
         if 'total' in param:
@@ -23,14 +25,19 @@ class Receit(ndb.Model):
             self.contact = param["contact"]
         
     def save(self):
+        ''' Save current Receit entity to datastore
+        '''
         self.put()
        
-        #Delete entity by key
     def delete(self):
+        '''Delete entity by key
+        '''
         self.key.delete()
     
     @classmethod
     def add(cls, car, props):
+        '''Add a new receit fill it with properties
+        '''
         r = Receit()
         props["garage"] = car.garage
         props["car"] = car.key

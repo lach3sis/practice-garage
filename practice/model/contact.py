@@ -13,6 +13,8 @@ class Contact(ndb.Model):
 
     
     def fill(self, param):
+        '''Fill Contact entity with properties
+        '''
         if 'name' in param:
             self.name = param['name']
         if 'email' in param:
@@ -23,50 +25,48 @@ class Contact(ndb.Model):
             self.klootfactor = param['klootfactor']
         if 'car' in param:
             self.car = param['car']
-            
-            
-        
+                    
     def save(self):
         self.put()
         
-        #Delete entity by key
+
     def delete(self):
+        '''Delete current contact
+        '''
         self.key.delete()
         memcache.delete("contacts_%s" %self.key.parent().urlsafe())
     
-    #Add a new contact
+    
     @classmethod
     def add(cls, car, g):
+        '''Add a new contact
+        '''
         c = Contact(parent = car.key)
         c.fill(g)
         c.put()
         memcache.delete("contacts_%s" %car.key.urlsafe())
         return c
 
-    
-    #update an existing contact
-
     def update(self, ident, props):
+        '''Update an existing contact
+        '''
         c = self.get(ident, self.key.parent())
         c.fill(props)
         c.save()
         return c
     
-    
-#     @staticmethod
-#     def get(ident, garagekey, limit=20):
-#         key = ndb.Key("Contact", int(ident), parent=garagekey)
-#         contact = key.get()
-#         return contact
-
     @staticmethod
     def get(ident, carkey):
+        '''Retrieve Contact entity by car key
+        '''
         key = ndb.Key("Contact", int(ident), parent=carkey)
         contact = key.get()
         return contact
     
     @classmethod
     def get_for_car(cls, car):
+        '''List car by contact
+        '''
         if not car:
             logging.warning("NO CAR!")
             return
@@ -76,15 +76,13 @@ class Contact(ndb.Model):
     
     @classmethod
     def list(cls, car, name=None, limit=20):
+        '''List all cars or search by name
+        '''
         contacts = memcache.get("contacts_%s" %car.key.urlsafe())
         if not contacts:
-            logging.warning("not in memcache")
             q = Contact.query(ancestor=car.key)
             contacts = [ x for x in q]
             memcache.set("contacts_%s" %car.key.urlsafe(), contacts)
         if limit and len(contacts) > limit:
             return contacts[:limit]
-        return contacts
-        
-
-    
+        return contacts   

@@ -66,7 +66,7 @@ class BasicTestCase(unittest2.TestCase):
                 for task in tasks:
                     logging.warning("executing: %s" % task["url"])
                     params = base64.b64decode(task["body"])
-                    logging.warning(params)
+#                     logging.warning(params)
                     if task['url']:
                         # normal taskque as post executed here
                         response = cls.app.post(task["url"], params)
