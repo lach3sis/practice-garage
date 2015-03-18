@@ -1,8 +1,3 @@
-'''
-Created on Mar 2, 2015
-
-@author: michaelroes
-'''
 from testcases.base.extended import ExtendedTestCase
 from practice.model.service import Service
 from practice.model.receit import Receit
@@ -21,7 +16,6 @@ class Test_service(ExtendedTestCase):
             model = obj.__class__
             fields = [x for x in model._properties.keys() if not x.startswith("_")]
         return {k: getattr(obj, k) for k in fields}
-
 
     def test_01(self):
         '''
