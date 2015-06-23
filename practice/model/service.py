@@ -25,9 +25,13 @@ class Service(ndb.Model):
         from practice.model.car import Car
         self.fill(props)
         self.save()
+        
         car = self.key.parent().get()
 #         Car.calculate1(car, self.list(car))
         car.calculate()
+     
+    def calculate_this(self):
+        pass
      
     def delete(self):
         self.key.delete()
@@ -62,10 +66,13 @@ class Service(ndb.Model):
         memcache.delete("services_%s" % car.key.urlsafe())
         car.calculate()
         return s
-        
+    
+    
+    
     @staticmethod
     def get(ident, carkey):
         key = ndb.Key("Service", int(ident), parent=carkey)
+        print key
         service = key.get()
         return service
      
@@ -81,4 +88,5 @@ class Service(ndb.Model):
                 q = q.filter(Service.replacement_part == replacement_part)
         if limit and len(services) > limit:
             return services[:limit]
+        
         return services

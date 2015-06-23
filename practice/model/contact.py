@@ -9,12 +9,12 @@ class Contact(ndb.Model):
     tel_nr = ndb.StringProperty()
     klootfactor = ndb.IntegerProperty()
     car = ndb.KeyProperty() 
-    
-
+    gender = ndb.StringProperty()
     
     def fill(self, param):
         '''Fill Contact entity with properties
         '''
+        
         if 'name' in param:
             self.name = param['name']
         if 'email' in param:
@@ -22,9 +22,12 @@ class Contact(ndb.Model):
         if 'tel_nr' in param:
             self.tel_nr = param['tel_nr']
         if 'klootfactor' in param:
-            self.klootfactor = param['klootfactor']
+            self.klootfactor = int(param['klootfactor'])
+        if 'gender' in param:
+            self.gender = param['gender']
         if 'car' in param:
-            self.car = param['car']
+            carkey = ndb.Key('Car', param['car'])
+            self.car = carkey
                     
     def save(self):
         self.put()
@@ -41,10 +44,11 @@ class Contact(ndb.Model):
     def add(cls, car, g):
         '''Add a new contact
         '''
-        c = Contact(parent = car.key)
+        carkey = ndb.Key('Car', car)
+        c = Contact(parent = carkey)
         c.fill(g)
         c.put()
-        memcache.delete("contacts_%s" %car.key.urlsafe())
+        memcache.delete("contacts_%s" %carkey.urlsafe())
         return c
 
     def update(self, ident, props):
@@ -76,7 +80,7 @@ class Contact(ndb.Model):
     
     @classmethod
     def list(cls, car, name=None, limit=20):
-        '''List all cars or search by name
+        '''List all contacts or search by name
         '''
         contacts = memcache.get("contacts_%s" %car.key.urlsafe())
         if not contacts:

@@ -1,6 +1,5 @@
 from testcases.base.extended import ExtendedTestCase
 from practice.model.contact import Contact
-import logging
 
 
 class Test(ExtendedTestCase):
@@ -20,7 +19,7 @@ class Test(ExtendedTestCase):
                           "email": "Vladje@dracul.com", 
                           "tel_nr": "065461125", 
                           "klootfactor": 666, 
-                          "car": car.key})
+                          "car": car.key.id()})
         self.assertEqual(1, len(Contact.list(car, "Drac Vladje")))    
         
         #Editing an existing contact

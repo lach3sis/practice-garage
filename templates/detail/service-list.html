@@ -1,0 +1,33 @@
+
+<!-- <div class="panel panel-info" id="content-holder-1" > -->
+  <!-- Default panel contents -->
+  <div class="panel-heading">Servicelist</div>
+  <div class="panel-body" style="max-height:645px;max-width:100%; overflow-x:scroll; ">
+    <!-- List group -->
+  <ul class="list-group" >
+ {% for service in services%}
+	<div class="col-md-4">
+	
+		<div id="service_{{service.key.id()}}" >
+    		<li class="list-group-item" id="_srv{{service.key.id()}}" >
+			    <div class="well well-sm" id="_contact-name">Job : {{ service.replacement_part }}</div> 
+			    <div class="well well-sm" service_pricepart="{{ service.price_part }}" id="_service_price">Price: {{ service.price_part }}</div>
+			    <div class="well well-sm" service_worked_hrs="{{ service.worked_hrs }}" id="_service_worked_hrs">Time spent on service : {{ service.worked_hrs }}</div>
+			    <div class="well well-sm" id="_service_date">Date : {{ receit.servicedate }}</div>
+			    <div class="input-group" id="_srv4925812092436480_total">
+				    <input class="text" readonly="readonly" id="_service_total_{{service.key.id()}}" value="Total :{{receit.total}}">  
+				    <span class="input-group-btn">
+			        	<div class="btn btn-info" style="cursor:pointer;" id="recalc_btn" sid="{{service.key.id()}}">Re-Calc</div> 
+			        </span>
+		        </div>
+	    
+   		 	</li>
+   		</div>
+	</div>
+ 	
+  {% endfor %}
+  </ul>
+  </div>
+
+  
+<!-- </div> -->

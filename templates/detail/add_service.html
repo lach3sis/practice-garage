@@ -1,0 +1,48 @@
+<!-- Template for adding a Service. -->
+			
+<form class="form-horizontal" id="add_service_template" name="add_service_template">
+<fieldset>
+
+<!-- Form Name -->
+
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="replacement_part">Replacement Part</label>
+  <div class="controls">
+    <input id="replacement_part" name="replacement_part" type="text" placeholder="Place a part name here..." class="input-medium" required="required">
+    <input type="hidden" id="car-id" value="{{car.key}}"/>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="price_part">Price Part</label>
+  <div class="controls">
+    <input id="price_part" name="price_part" type="text" placeholder="Price for part..." class="input-medium">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="worked_hrs">worked hrs</label>
+  <div class="controls">
+    <input id="worked_hrs" name="worked_hrs" type="amount" placeholder="Edit working hours..." class="input-medium">
+    
+  </div>
+</div>
+
+<!-- Button (Double) -->
+<div class="control-group">
+  <label class="control-label" for="save_contact">Action</label>
+  <div class="controls">
+    <button id="save_service" carid="{{car.key.id()}}" name="save_service" class="btn btn-success">Save</button>
+    <button id="cancel_service" name="cancel_service" class="btn btn-danger">Cancel</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+<!-- / Template for adding a contact. -->

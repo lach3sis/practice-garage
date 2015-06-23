@@ -86,9 +86,9 @@ class BasicTestCase(unittest2.TestCase):
 
         return True
 
-    def test_0(self):
-        self.core_test()
-        pass
+#     def test_0(self):
+#         self.core_test()
+#         pass
 
     def core_test(self):
         """ Some defaults simple test to see if test base is functional

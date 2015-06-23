@@ -1,3 +1,41 @@
 {% for g in garages %}
 
+<div class="col-sm-6" style="margin-top:15px;">
+
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			Garage name: <div class="btn" role="presentation" id="garage_" gid="{{g.key.id()}}">{{ g.name }}</div>
+		</div>
+		
+		<div class="panel-body">
+		
+			<div class="list-group">
+				<div class="list-group-item">brand: {{g.brand}}</div>
+				<div class="list-group-item">postal country: {{g.postal_country}}</div>
+				<div class="list-group-item">Price per hour: {{g.price_per_hours}}</div>
+				<div class="list-group-item">Roundup WorkHours: {{g.roundup_workhrs}}</div>
+				<div class="list-group-item">Note: {{ g.note}}</div>
+				<div class="list-group-item"></div>
+				<div class="list-group-item">
+					<div class="btn-group btn-group-justified" role="group" aria-label="...">
+					  <div class="btn-group" role="group">
+					    <button type="button" class="btn btn-info btnedit" garage_id="{{g.key.id()}}" id="{{g.key.id()}}">Edit</button>
+					  </div>
+					  <div class="btn-group" role="group">
+					    <button type="button" class="btn btn-danger btndel" garage_id="{{g.key.id()}}" id="{{g.key.id()}}">Delete</button>
+					  </div>
+					  <div class="btn-group" role="group">
+					    <button type="button" class="btn btn-warning btntest" garage_id="{{g.key.id()}}" id="{{g.key.id()}}">Press Me</button>
+					  </div>
+					</div>
+				</div> 
+<!-- 				<div class="list-group-item"></div> -->
+			</div>
+			
+		</div>	
+	</div>
+</div>
+
+
+
 {% endfor %}

@@ -1,0 +1,37 @@
+{% for g in garages %}
+<div class="col-md-2 clear_left_padding">
+					<!-- <div class="img img-responsive" style="background-image: url'/view_garage_avatar/{{g.avatar}}';width:195px; height:195px;"></div> -->
+					<img id="ft_r1-f1" class="img-responsive row1"  style="width:195px; height:195px;opacity:0.2;" src="/view_garage_avatar/{{g.avatar}}">
+					<div class="contenthover" style="overscroll-y:scroll;">
+								
+					Garage name: <a role="presentation" id="garage_" gid="{{g.key.id()}}">{{ g.name }}</a>
+
+			<ul style="list-style: none;padding-left: 0.1em;">
+					<li>Brand : {{g.brand}}</li>
+					<li>Country : {{ g.postal_country }}</li>
+				 	<li>Price per Hour : {{ g.price_per_hours }}</li>
+				 	<li>Round up Workhours ? : {{ g.roundup_workhrs }}</li>
+				 	<li>Note : {{ g.note }}</li>
+					<li>
+					<div class="btn-group btn-group-justified" role="group" aria-label="...">
+					  
+					    <button type="button" class="btn-xs btn-info btnedit" garage_id="{{g.key.id()}}" id="{{g.key.id()}}">Edit</button>
+					  
+					 
+					    <button type="button" class="btn-xs btn-danger btndel" garage_id="{{g.key.id()}}" id="{{g.key.id()}}">Delete</button>
+					
+					  
+					    <button type="button" class="btn-xs btn-warning show_car_btn" garage_id="{{g.key.id()}}" id="{{g.key.id()}}">Show</button>
+					 	<button type="button" class="btn-xs btn-success get_garage_avatarForm"  garage_id="{{g.key.id()}}" ><i class="fa fa-xs fa-camera"></i></button>    
+					</div>
+				</li>
+			</ul>
+				
+<!-- 				<div class="list-group-item"></div> -->
+			
+	
+	</div>
+	    				
+					</div>
+			
+{% endfor %}

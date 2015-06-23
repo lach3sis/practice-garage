@@ -1,0 +1,18 @@
+{% for contact in contacts%}
+<div class="panel panel-info" id="content-holder-1" >
+  <!-- Default panel contents -->
+  <div class="panel-heading">Contact details</div>
+  <div class="panel-body" id="_{{contact.key.id()}}">
+    <!-- List group -->
+  <ul class="list-group">
+    <li class="list-group-item"><div class="well well-sm" id="_contact-name">Name : {{ contact.name }}</div> </li>
+    <li class="list-group-item"><div class="well well-sm" id="_contact-email">Email: {{ contact.email }}</div> </li>
+    <li class="list-group-item"><div class="well well-sm" id="_contact-telephone">Telephone : {{ contact.tel_nr }}</div> </li>
+    <li class="list-group-item"><div class="well well-sm" id="_contact-klootfactor">Klootfactor : {{ contact.klootfactor }}</div> </li>
+    <li class="list-group-item"><div class="well well-sm" id="_contact-gender">Gender : {{ contact.gender }}</div> </li>
+  </ul>
+  </div>
+
+  
+</div>
+{% endfor %}

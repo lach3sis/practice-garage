@@ -35,6 +35,7 @@ class Test_service(ExtendedTestCase):
         Service.add(car, {"replacement_part": "BigScam", 
                           "price_part": 1337, "worked_hrs": 18})
         self.assertEqual(1, len(Receit.list(contact, car)))
+        print Service.list(car)
         self.assertEqual(2, len(Service.list(car)))
         
         #Update an existing service

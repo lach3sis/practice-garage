@@ -1,0 +1,101 @@
+.bovenbalk{
+	width:100%;
+	background-color: #36525f;
+	min-height: 29px;
+}
+
+.bovenbalk_mini{
+	width:100%;
+	background-color: #607d8b;
+	min-height: 29px;
+}
+
+.navbar-static-top{
+	background-color: #607d8b;
+}
+.navbar-brand{
+	color: white !important;
+}
+
+.navbar-header > a, #navbar >ul > li > a {
+	color: white;
+
+}
+
+.thumbmnail_titel{
+	font-size: 36px;
+	width: 100%;
+}
+
+#upper_content_balk_container{
+	width: 100%;
+	background-color: #36525f;
+	min-height: 2%;
+	position:absolute;
+	height:5%;
+
+}
+
+#upper_content_balk{
+	width: 100%;
+	min-height: 25%;
+	height: 50%;
+	position: relative;
+	background-color: #cfd8dc;
+	
+}
+
+.sq_lg{
+	float: left;
+	margin: 0;
+}
+
+ #ft_r1-f1, #ft_r1-f2, #ft_r1-f3, #ft_r1-f4, #ft_r1-f5, #ft_r1-f6{
+	position: relative;
+	min-height: 200px;
+	margin:0;
+	
+}
+
+
+.clear_left_padding{
+	padding-left: 0;
+	padding-right: 0;
+	float: left;
+}
+
+#mid_content_balk_container{
+	margin-top:2%;
+	width: 100%;
+	background-color: #cfd8dc;
+	left:0%;
+	min-height: 2%;
+	position:absolute;
+	height:5%;	
+}
+#ft_r2-f2{
+	
+	display: inline-block;
+}
+.contenthover { 
+	padding:0;
+	}
+.contenthover, .contenthover h3, contenthover a { 
+	color:#fff; 
+	}
+.contenthover h3, .contenthover p { 
+	margin:0 0 10px 0; line-height:1.4em; padding:0; 
+	}
+.contenthover a.mybutton { 
+	display:block; 
+	float:left; 
+	padding:5px 10px; 
+	background:#3c9632; 
+	color:#fff; 
+	-moz-border-radius: 4px; 
+	-webkit-border-radius: 4px; 
+	border-radius: 4px; 
+	}
+.contenthover a.mybutton:hover { 
+	background:#34742d 
+	}

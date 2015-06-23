@@ -3,12 +3,11 @@ from google.appengine.api import memcache
 import logging
 
 class Receit(ndb.Model):
+    
     garage = ndb.KeyProperty(kind="Garage")
     car = ndb.KeyProperty(kind="Car", required=True)
-
     servicedate = ndb.StringProperty()
     total = ndb.FloatProperty()
-    
     contact = ndb.KeyProperty("Contact")
     
     

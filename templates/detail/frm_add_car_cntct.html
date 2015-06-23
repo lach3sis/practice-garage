@@ -1,0 +1,71 @@
+
+		<div class="modal-header">
+			<a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+			<h3>Add a contact. Car: {{car.name}} </h3>
+		</div>
+		<div class="modal-body">
+		    <div class="col-sm-5">
+		 		<div id="contactform">
+					<!-- Template for adding a contact. -->
+					<form class="form-horizontal" id="add_contact_form" name="add_contact_template">
+						<fieldset>
+							<!-- Text input-->
+							<div class="control-group">
+		  						<label class="control-label" for="contact_first_name">First Name</label>
+								<div class="controls">
+									<input id="input_first_name" name="contact_first_name" type="text" placeholder="Place a name here..." class="input-medium" required="">
+								</div>
+							</div>
+							<!-- Text input-->
+							<div class="control-group">
+		  						<label class="control-label" for="contact_email">Email</label>
+								<div class="controls">
+									<input id="input_email" name="contact_email" type="text" placeholder="Email..." class="input-medium">
+								</div>
+							</div>
+							<!-- Text input-->
+							<div class="control-group">
+								<label class="control-label" for="contact_tel">Telephone</label>
+							  	<div class="controls">
+							    	<input id="input_tel" name="contact_tel" type="text" placeholder="Telephone nr here..." class="input-medium">
+							  	</div>
+						  	</div>
+							<!-- Select Basic -->
+							<div class="control-group">
+							  <label class="control-label" for="contact_klootfactor">Kloot Factor</label>
+							  <div class="controls">
+							    <select id="contact_klootfactor" name="contact_klootfactor" class="input-small selectpicker">
+							      <option value=3 >3x</option>
+							      <option value=5>5x</option>
+							      <option value=12>12x</option>
+							      <option value=50>50x</option>
+							      <option value=75>75x</option>
+							      <option value=120000>120000x</option>
+							    </select>
+							  </div>
+							</div>
+							<!-- Multiple Checkboxes (inline) -->
+							<div class="control-group">
+							  <label class="control-label" for="contact_gender">Gender</label>
+							    <select class="controls selectpicker" id='contact_gender'>
+							    	<option value='male'>Male</option>
+							    	<option value='female'>Female</option>
+							    </select>
+							</div>
+							<!-- Button (Double) -->
+							<div class="control-group">
+								<label class="control-label" for="save_contact">Action</label>
+								<div class="controls">
+									<div id="save_contact_to_car" name="save_contact" carid="{{car.key.id()}}"  class="btn btn-success">Save</div>
+									<button id="cancel_contact" name="cancel_contact" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" >Cancel</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<!-- / Template for adding a contact. -->
+			</div>
+		</div>
+
+	
+		

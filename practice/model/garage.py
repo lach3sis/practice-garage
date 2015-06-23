@@ -1,21 +1,16 @@
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
+from practice.system.base.model import BaseModel
 
 
-class Garage(ndb.Model):
+class Garage(BaseModel):
     name = ndb.StringProperty(required=True)
     brand = ndb.StringProperty()
     postal_country = ndb.StringProperty()
     price_per_hours = ndb.FloatProperty()
     roundup_workhrs = ndb.BooleanProperty()
     note = ndb.TextProperty(indexed=False)
-
-    @classmethod
-    def get(cls, key):
-        '''Retrieve garage entity
-        '''
-        return ndb.Key("Garage", int(key)).get()
-
+    avatar = ndb.BlobKeyProperty()
     @classmethod
     def list(cls, name=None, brand=None, limit=20):
         '''List all garages or search by name or brand
@@ -41,6 +36,7 @@ class Garage(ndb.Model):
             q = q.filter(Garage.brand == brand)
         if limit:
             return q.fetch(limit)
+        print [ x for x in q]
         return [x for x in q]
 
     def fill(self, props):
@@ -53,7 +49,12 @@ class Garage(ndb.Model):
         if 'note' in props:
             self.note = props['note']
         if 'price_per_hours' in props:
-            self.price_per_hours = props['price_per_hours']
+            self.price_per_hours = float(props['price_per_hours'])
+        if 'postal_country' in props:
+            self.postal_country = props['postal_country']
+        if 'roundup_workhrs' in props:
+            self.roundup_workhrs = bool(props['roundup_workhrs'])
+            
 
     def save(self):
         '''Save current garage entity to datastore  and empty cache
@@ -66,6 +67,8 @@ class Garage(ndb.Model):
     def update(cls, ident, props):
         '''Update an existing Garage with new properties
         '''
+        import logging
+        logging.warning ("ident is: %s props is:%s" % (ident,props))
         c = cls.get(key=ident)
         c.fill(props=props)
         c.save()

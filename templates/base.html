@@ -1,20 +1,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 {# Jinja comment: This is the basic html page that will be loaded #}
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<!-- Only basic jquery imported -->
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	
-	<script type="text/javascript" src="/scripts/base.js"></script>
-	<link type="text/css" rel="stylesheet" href="/static/main.css" />
-	{%- block script %} {% endblock -%}
-	<title>Practice the Garage - {% block title %}{% endblock %}</title>
-</head>
-<body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link type="text/css" rel="stylesheet" href="/static/main.css" />
+		<link rel="stylesheet" href="/static/bootstrap/css/bootstrap-latest.css" media="screen">
+		<link type="text/css" rel="stylesheet" href="/static/bootstrap-select/css/bootstrap-select.css"/>
+		<link type="text/css" rel="stylesheet" href="/static/font-awesome/css/font-awesome.css"></link>
+		
+		<!-- Only basic jquery imported -->
+		<script type="text/javascript" src="/scripts/jquery-2.1.4.min.js"></script>
 
-	{% block page %} {% endblock %}
-
-</body>
+		<script type="text/javascript" src="/scripts/base.js"></script>
+		<script src="/static/bootstrap/js/bootstrap-latest.js"></script>
+		<script src="/static/bootstrap-select/js/bootstrap-select.min.js"></script>
+	    <script src="/scripts/jquery.codemirror.js"></script>
+		
+		{%- block script %} {% endblock -%}
+		<title>Garage - {% block title %}{% endblock %}</title>
+	</head>
+	<body>
+		{% block page %} {% endblock %}
+	</body>
 
 </html>

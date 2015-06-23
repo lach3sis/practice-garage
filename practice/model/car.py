@@ -2,8 +2,10 @@ from google.appengine.ext import ndb
 from practice.model.service import Service
 from practice.model.receit import Receit
 from practice.model.contact import Contact
+from practice.model.car_avatar import CarAvatar
 import time
 import logging
+from practice.model.garage import Garage
 from google.appengine.api import memcache
 
 
@@ -11,15 +13,22 @@ class Car(ndb.Model):
     garage = ndb.KeyProperty(required=True)
     brand = ndb.StringProperty(required=True)
     name = ndb.StringProperty(required=True)
+    avatar = ndb.BlobKeyProperty()
     last_edit = ndb.DateTimeProperty(auto_now=True)
      
     def fill(self,props):
         '''Fill Car entity with properties
         '''
         if 'garage' in props:
-            self.garage = props['garage']
+            self.garage = ndb.Key('Garage', props['garage'])
+        if 'img' in props:
+            self.avatar = props['img']
+        if 'avatar' in props:
+            self.avatar = props['img']
+            
         self.brand = props['brand']
         self.name = props['name']
+        memcache.delete("cars_%s" % self.garage.urlsafe())
         
     def save(self):
         '''Save current car entity to datastore
@@ -35,6 +44,7 @@ class Car(ndb.Model):
         c.fill(props=props)
         c.save()
         return c
+        memcache.delete("cars_%s" % self.garage.urlsafe())
         
     def delete(self):
         '''Delete current car
@@ -48,18 +58,20 @@ class Car(ndb.Model):
         '''
         key = ndb.Key("Car", int(ident))
         car = key.get()
+        print Garage.get(car.garage.id())
         return car
     
     @classmethod
-    def add(cls, garage, params):
+    def add(cls, params):
         '''Add a new car
         '''
         newcar = Car()
-        newcar.garage = garage.key
+        g = ndb.Key('Garage', params['garage'])
+        newcar.garage = g
         newcar.fill(params)
         newcar.put()
-        memcache.delete("cars_%s" % garage.key.urlsafe())
         return newcar
+        memcache.delete("cars_%s" % g.urlsafe())
    
     def add_carcontact(self, props):
         '''Add a contact to current car
@@ -69,7 +81,13 @@ class Car(ndb.Model):
         contact_to_add.put()
         memcache.delete("contacts_%s" %self.key.urlsafe())
         return contact_to_add
-         
+    
+    
+    def add_avatar(self, carkey, blobkey ):
+        avatar = CarAvatar(car_key=carkey, blob_key=blobkey, parent=self.key)
+        avatar.save()
+        
+           
     def add_carservice(self, props):
         '''Add a service to current car
         '''
@@ -87,8 +105,8 @@ class Car(ndb.Model):
         contact = []
         for c in Contact.list(self):
             ident = c.key.id()
-        currentcontact = Contact.get(ident, self.key)
-        contact.append(currentcontact)
+            currentcontact = Contact.get(ident, self.key)
+            contact.append(currentcontact)
         return contact
 
     def listservices(self):
@@ -98,6 +116,14 @@ class Car(ndb.Model):
         for service in Service.list(self):
             services.append(service)
         return services
+    
+    def listservices_count(self):
+        '''list services from current car
+        '''
+        services =[]
+        for service in Service.list(self):
+            services.append(service)
+        return len(services)
 
     @classmethod
     def listreceit(cls,self):
@@ -168,7 +194,7 @@ class Car(ndb.Model):
             memcache.delete("receits_%s" % contact.key.urlsafe())   
         elif len(Receit.list(contact, self)) != 0 :
             for receit in Receit.list(contact, self):ident = receit.key.id()
-            receit = Receit.get(ident, contact.key, 1)
+            receit = Receit.get(ident)
             receit.total = total
             receit.servicedate = datestamp
             receit.save()
@@ -177,7 +203,21 @@ class Car(ndb.Model):
         else:
             logging.error("Car ERROR!")
         return total
-
+    
+    
+    def calc_single_service(self, price_part, worked_hrs, price_per_hours=0.0,  klootfactor=1):
+        
+        
+            result = price_per_hours * worked_hrs
+            result = result + price_part
+            
+            if klootfactor:
+                percent = result / 100 * klootfactor
+                return result - percent
+            
+            return result
+        
+        
     def calculate(self):
         '''(Re)Calculate costs for all services registered by current car
         create receit from result
@@ -201,10 +241,11 @@ class Car(ndb.Model):
             contact = c
             kf = c.klootfactor
         for item in Service.list(car=self):
+            gar = Garage.get(self.garage.id())
             total = total + calc(
                                  self, kf, 
                                  item.worked_hrs, 
-                                 self.garage.get().price_per_hours,
+                                 gar.price_per_hours,
                                  item.price_part
                                  )
         return Receit.add(self, {'total': total,
@@ -213,14 +254,14 @@ class Car(ndb.Model):
                                  })
 
     @classmethod
-    def listtest(cls, garage, name=None, limit=20):
+    def listtest(cls, garagekey, name=None, limit=20):
         '''List current cars from garage or filter by name
         '''
-        cars = memcache.get("cars_%s" % garage.key.urlsafe())
+        cars = memcache.get("cars_%s" % garagekey.urlsafe())
         if not cars:
-            q = Car.query(Car.garage == garage.key)
+            q = Car.query(Car.garage == garagekey)
             cars = [ x for x in q]
-            memcache.set("cars_%s" % garage.key.urlsafe(), cars)
+            memcache.set("cars_%s" % garagekey.urlsafe(), cars)
         if limit and len(cars) > limit:
             return cars[:limit]
         return cars

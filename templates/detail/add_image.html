@@ -1,0 +1,10 @@
+<form action="car_img/{{car.key.id()}}" enctype="multipart/form-data" method="post">
+                <div><textarea name="content" rows="3" cols="60"></textarea></div>
+                <div><label>Avatar:</label></div>
+                <div><input type="file" name="img"/></div>
+                <div><input type="submit" value="Submit Photo"></div>
+              </form>
+              <hr>
+              <form>Car <input car_id="{{car.key.id()}}" value="{{car.key.id()}}" name="car">
+              <input type="submit" value="switch"></form>
+           
